@@ -17,6 +17,18 @@ public class Main {
     //     return tempList;
     // }
 
+    private static List<AbstractAnimal> filterAnimal(List<AbstractAnimal> animals, CheckAnimal tester) {
+        List<AbstractAnimal> tempList = new ArrayList<>();
+
+        for (AbstractAnimal a : animals) {
+            if (tester.test(a)){
+                tempList.add(a);
+            }
+        }
+
+        return tempList;
+    }
+
     public static void main(String[] args) {
 
         Mammal panda = new Mammal(0, "Panda", 1869);
@@ -65,7 +77,6 @@ public class Main {
         myList.add(catfish);
         myList.add(perch);
         
-        // System.out.println(myList);
         System.out.println("\n*** List all the animals in descending order by year named ***");
         myList.sort((a1, a2) -> a2.getYear() - (a1.getYear()));
         myList.forEach((a) -> System.out.println(a));
@@ -78,8 +89,27 @@ public class Main {
         myList.sort((a1, a2) -> a1.move().compareToIgnoreCase(a2.move()));
         myList.forEach((a) -> System.out.println(a));
 
-        
+
+        // List<AbstractAnimal> filteredList = filterAnimal(myList, a -> a.getYear() > 1800);
+        // filteredList.sort((a1, a2) ->  a2.getYear() - a1.getYear());
+        // filteredList.forEach((a) -> System.out.println(a));
 
 
+        System.out.println("\n*** List only those animals the breathe with lungs ***");
+        List<AbstractAnimal> filteredList = filterAnimal(myList, a -> a.breathe() == "lungs");
+        filteredList.forEach((a) -> System.out.println(a));
+
+        System.out.println("\n*** List only those animals that breath with lungs and were named in 1758 ***");
+        filteredList = filterAnimal(myList, a -> (a.breathe() == "lungs") && (a.getYear() == 1758));
+        filteredList.forEach((a) -> System.out.println(a));
+
+        System.out.println("\n*** List only those animals that lay eggs and breath with lungs ***");
+        filteredList = filterAnimal(myList, a -> (a.breathe() == "lungs") && (a.reproduce() == "eggs"));
+        filteredList.forEach((a) -> System.out.println(a));
+
+        System.out.println("\n*** List alphabetically only those animals that were named in 1758 ***");
+        filteredList = filterAnimal(myList, a -> (a.getYear() == 1758));
+        filteredList.sort((a1, a2) -> a1.getName().compareToIgnoreCase(a2.getName()));
+        filteredList.forEach((a) -> System.out.println(a));
     }
 }
